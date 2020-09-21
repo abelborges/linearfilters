@@ -29,14 +29,3 @@ response_drawer = function(poles = List(), zeros = List()) {
        xlab = expression(omega),
        ylab = expression(abs(H(omega))))
 }
-
-to_polar = function(point) {
-  radius = sqrt(point$x^2 + point$y^2)
-  
-  sin = point$y / radius; cos = point$x / radius
-  radians = atan(sin / cos)
-  if (cos < 0) radians = radians + pi
-  radians = radians %% TAU
-  
-  list(radians = radians, radius = radius)
-}
