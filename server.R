@@ -6,19 +6,16 @@ function(input, output, session) {
   # helpers
   picker_draw = function() {
     output$pzs = renderPlot({ picker_drawer(poles, zeros) })
-    response_draw()
+    output$response = renderPlot({ response_drawer(poles, zeros) })
   }
   
   picker_reset = function() { poles$flush(); zeros$flush(); picker_draw() }
-  
-  response_draw = function()
-    output$response = renderPlot({ response_drawer(poles, zeros) })
   
   # init
   picker_draw()
   
   # listeners
-  observeEvent(c(input$npoles, input$nzeros), {
+  observeEvent(c(input$reset, input$npoles, input$nzeros), {
     picker_reset()
     poles$maxlen = input$npoles
     zeros$maxlen = input$nzeros
@@ -27,12 +24,10 @@ function(input, output, session) {
   observeEvent(input$pzclick, {
     if (poles$has_room() || zeros$has_room()) {
       if (poles$has_room())
-        poles$add(input$pzclick, function(pt) list(x = pt$x, y = pt$y))
+        poles$add(input$pzclick, to_xy)
       else
-        zeros$add(input$pzclick, function(pt) list(x = pt$x, y = pt$y))
+        zeros$add(input$pzclick, to_xy)
       picker_draw()
     }
   })
-  
-  observeEvent(input$reset, picker_reset())
 }

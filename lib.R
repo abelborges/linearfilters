@@ -3,6 +3,8 @@ coalesce = function(...) {
   return(NULL)
 }
 
+to_xy = function(pt) list(x = pt$x, y = pt$y)
+
 # math
 to_degrees = function(radians) sprintf('%.2fº', 360 * radians/TAU)
 
